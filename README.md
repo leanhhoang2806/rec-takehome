@@ -11,3 +11,4 @@ wait for both container is up and running.
 
 ## API Endpoints
 http://localhost:8000/docs
+Use `Name` for dinners because data is loaded with default UUID, so its UUID changed every time the docker containers is spin up
