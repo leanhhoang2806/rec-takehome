@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app/src 
+    environment:
+      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
+    networks:
+      - your_network
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=mydatabase  
+      - POSTGRES_USER=myuser 
+      - POSTGRES_PASSWORD=mypassword  
+    
+    networks:
+      - your_network
+
+networks:
+  your_network:
