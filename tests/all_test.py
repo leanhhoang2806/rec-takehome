@@ -18,15 +18,15 @@ def test_hello_endpoint():
     assert response.json() == expected_message
 
 
-# def test_get_table_name_not_found():
-#     url = BASE_URL + "/api/v1/search/restaurants"
-#     eaters = ["test"]
-#     time = datetime.now()
+def test_get_table_name_not_found():
+    url = BASE_URL + "/api/v1/search/restaurants"
+    eaters = ["test"]
+    time = datetime.now()
 
-#     params = {"eaters": eaters, "time": time}
-#     response = requests.get(url, params=params)
+    params = {"eaters": eaters, "time": time}
+    response = requests.get(url, params=params)
 
-#     assert response.status_code == 400
+    assert response.status_code == 400
 
 
 def test_get_table_multiple():
@@ -38,7 +38,7 @@ def test_get_table_multiple():
     response = requests.get(url, params=params)
 
     results = response.json()
-    print(results)
+
     assert response.status_code == 200
     assert results == None
 

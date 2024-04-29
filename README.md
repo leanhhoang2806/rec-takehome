@@ -7,3 +7,7 @@ wait for both container is up and running.
 `source myenv/bin/activate`
 `pip install pytest`
 2. In the same directory as `src`. do `pytest -s`
+
+
+## API Endpoints
+http://localhost:8000/docs

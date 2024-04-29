@@ -152,6 +152,17 @@ class ReservationDAO:
 
     def delete(self, reservation_id: UUID) -> int:
         try:
+            reservation : Reservation = session.query(Reservation).filter(Reservation.id == str(reservation_id)).first()
+            eaters = session.query(Reservation).join(t_Reservation_Eater).filter(Reservation.id == str(reservation_id)).all()
+            seat_columns = {
+                1: "two_people_table",
+                2: "two_people_table",
+                3: "four_people_table",
+                4: "four_people_table",
+                5: "six_people_table",
+                6: "six_people_table",
+            }
+            seat_column = seat_columns.get(len(eaters), "six_people_table")
             session.query(t_Reservation_Eater).filter(
                 t_Reservation_Eater.c.reservation_id == str(reservation_id)
             ).delete()
@@ -160,6 +171,40 @@ class ReservationDAO:
                 Reservation.id == str(reservation_id)
             ).delete()
 
+            if seat_column == "two_people_table":
+                stmt = (
+                    update(RestaurantAvailableTable)
+                    .where(
+                        RestaurantAvailableTable.restaurant_id
+                        == str(reservation.restaurant_id)
+                    )
+                    .values(
+                        two_people_table=RestaurantAvailableTable.two_people_table + 1
+                    )
+                )
+            elif seat_column == "four_people_table":
+                stmt = (
+                    update(RestaurantAvailableTable)
+                    .where(
+                        RestaurantAvailableTable.restaurant_id
+                        == str(reservation.restaurant_id)
+                    )
+                    .values(
+                        four_people_table=RestaurantAvailableTable.four_people_table + 1
+                    )
+                )
+            elif seat_column == "six_people_table":
+                stmt = (
+                    update(RestaurantAvailableTable)
+                    .where(
+                        RestaurantAvailableTable.restaurant_id
+                        == str(reservation.restaurant_id)
+                    )
+                    .values(
+                        six_people_table=RestaurantAvailableTable.six_people_table + 1
+                    )
+                )
+            session.execute(stmt)
             session.commit()
             return True
         except Exception as e:
