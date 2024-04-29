@@ -2,7 +2,7 @@ from src.models.posgres_model import (
     Restaurant,
     t_Dietary_Restrictions,
     t_Restaurant_Endorsements,
-    Endorsement
+    Endorsement,
 )
 from src.models.pydantic_model import RestaurantCreate
 from src.DAOs.database_session import session
@@ -29,12 +29,16 @@ class RestaurantDAO(BaseDAO):
             session.close()
 
     def reservation_search(self, eater_ids: List[UUID]) -> Optional[Restaurant]:
-        
+
         try:
 
             eater_diet_query = (
                 session.query(t_Dietary_Restrictions)
-                .filter(t_Dietary_Restrictions.c.eater_id.in_([str(eater_id) for eater_id in eater_ids]))
+                .filter(
+                    t_Dietary_Restrictions.c.eater_id.in_(
+                        [str(eater_id) for eater_id in eater_ids]
+                    )
+                )
                 .all()
             )
 

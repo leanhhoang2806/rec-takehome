@@ -152,8 +152,17 @@ class ReservationDAO:
 
     def delete(self, reservation_id: UUID) -> int:
         try:
-            reservation : Reservation = session.query(Reservation).filter(Reservation.id == str(reservation_id)).first()
-            eaters = session.query(Reservation).join(t_Reservation_Eater).filter(Reservation.id == str(reservation_id)).all()
+            reservation: Reservation = (
+                session.query(Reservation)
+                .filter(Reservation.id == str(reservation_id))
+                .first()
+            )
+            eaters = (
+                session.query(Reservation)
+                .join(t_Reservation_Eater)
+                .filter(Reservation.id == str(reservation_id))
+                .all()
+            )
             seat_columns = {
                 1: "two_people_table",
                 2: "two_people_table",

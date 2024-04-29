@@ -25,12 +25,14 @@ def test_get_table_name_not_found():
 
     assert response.status_code == 400
 
+
 def test_get_table_name_single():
     url = BASE_URL + "/api/v1/user/Michael"
 
     response = requests.get(url)
 
     assert response.status_code == 200
+
 
 def test_get_table_multiple():
     url = BASE_URL + "/api/v1/search/restaurants"
@@ -40,7 +42,7 @@ def test_get_table_multiple():
         eater_url = BASE_URL + f"/api/v1/user/{eater}"
         response = requests.get(eater_url)
         json_response = response.json()
-        eater_ids.append(json_response['id'])
+        eater_ids.append(json_response["id"])
     params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
@@ -58,7 +60,7 @@ def test_get_table():
         eater_url = BASE_URL + f"/api/v1/user/{eater}"
         response = requests.get(eater_url)
         json_response = response.json()
-        eater_ids.append(json_response['id'])
+        eater_ids.append(json_response["id"])
     params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
@@ -79,7 +81,7 @@ def test_get_table_multiple():
         eater_url = BASE_URL + f"/api/v1/user/{eater}"
         response = requests.get(eater_url)
         json_response = response.json()
-        eater_ids.append(json_response['id'])
+        eater_ids.append(json_response["id"])
     params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
@@ -101,7 +103,7 @@ def test_book_reseration():
         eater_url = BASE_URL + f"/api/v1/user/{eater}"
         response = requests.get(eater_url)
         json_response = response.json()
-        eater_ids.append(json_response['id'])
+        eater_ids.append(json_response["id"])
     params = {"eaters": eater_ids}
 
     # Search for available restaurants

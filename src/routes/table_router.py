@@ -43,8 +43,7 @@ async def create_reservation(reservation_create: ReservationCreate):
 async def delete_reservation(reservation_id: UUID):
     return reservation_manager.delete(reservation_id)
 
+
 @router.get("/user/{name}")
-async def get_all_user(
-    name: str
-):
-    return eater_manager.get_eater_by_name(name) 
+async def get_all_user(name: str):
+    return eater_manager.get_eater_by_name(name)
