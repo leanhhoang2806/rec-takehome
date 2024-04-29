@@ -29,11 +29,12 @@ class RestaurantDAO(BaseDAO):
             session.close()
 
     def reservation_search(self, eater_ids: List[UUID]) -> Optional[Restaurant]:
+        
         try:
 
             eater_diet_query = (
                 session.query(t_Dietary_Restrictions)
-                .filter(t_Dietary_Restrictions.c.eater_id.in_(eater_ids))
+                .filter(t_Dietary_Restrictions.c.eater_id.in_([str(eater_id) for eater_id in eater_ids]))
                 .all()
             )
 

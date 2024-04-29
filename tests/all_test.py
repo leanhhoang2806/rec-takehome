@@ -19,22 +19,29 @@ def test_hello_endpoint():
 
 
 def test_get_table_name_not_found():
-    url = BASE_URL + "/api/v1/search/restaurants"
-    eaters = ["test"]
-    time = datetime.now()
+    url = BASE_URL + "/api/v1/user/test"
 
-    params = {"eaters": eaters, "time": time}
-    response = requests.get(url, params=params)
+    response = requests.get(url)
 
     assert response.status_code == 400
 
+def test_get_table_name_single():
+    url = BASE_URL + "/api/v1/user/Michael"
+
+    response = requests.get(url)
+
+    assert response.status_code == 200
 
 def test_get_table_multiple():
     url = BASE_URL + "/api/v1/search/restaurants"
     eaters = ["Michael", "Lucile", "Gob", "Maeby"]
-    time = datetime.now()
-
-    params = {"eaters": eaters, "time": time}
+    eater_ids = []
+    for eater in eaters:
+        eater_url = BASE_URL + f"/api/v1/user/{eater}"
+        response = requests.get(eater_url)
+        json_response = response.json()
+        eater_ids.append(json_response['id'])
+    params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
     results = response.json()
@@ -46,9 +53,13 @@ def test_get_table_multiple():
 def test_get_table():
     url = BASE_URL + "/api/v1/search/restaurants"
     eaters = ["Michael"]
-    time = datetime.now()
-
-    params = {"eaters": eaters, "time": time}
+    eater_ids = []
+    for eater in eaters:
+        eater_url = BASE_URL + f"/api/v1/user/{eater}"
+        response = requests.get(eater_url)
+        json_response = response.json()
+        eater_ids.append(json_response['id'])
+    params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
     expected_names = set(["u.to.pi.a", "Panadería Rosetta"])
@@ -60,12 +71,16 @@ def test_get_table():
     assert result_names == expected_names
 
 
-def test_get_table():
+def test_get_table_multiple():
     url = BASE_URL + "/api/v1/search/restaurants"
     eaters = ["Michael", "George Michael"]
-    time = datetime.now()
-
-    params = {"eaters": eaters, "time": time}
+    eater_ids = []
+    for eater in eaters:
+        eater_url = BASE_URL + f"/api/v1/user/{eater}"
+        response = requests.get(eater_url)
+        json_response = response.json()
+        eater_ids.append(json_response['id'])
+    params = {"eaters": eater_ids}
     response = requests.get(url, params=params)
 
     expected_names = set(["Panadería Rosetta"])
@@ -81,8 +96,13 @@ def test_book_reseration():
     search_url = BASE_URL + "/api/v1/search/restaurants"
     eaters = ["Michael"]
     time = datetime.now()
-
-    params = {"eaters": eaters, "time": time}
+    eater_ids = []
+    for eater in eaters:
+        eater_url = BASE_URL + f"/api/v1/user/{eater}"
+        response = requests.get(eater_url)
+        json_response = response.json()
+        eater_ids.append(json_response['id'])
+    params = {"eaters": eater_ids}
 
     # Search for available restaurants
     response = requests.get(search_url, params=params)
