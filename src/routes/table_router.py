@@ -19,9 +19,10 @@ reservation_manager = ReservationManager()
 
 @router.get("/search/restaurants", response_model=Optional[List[RestaurantPydantic]])
 async def get_available_table(
+    time: datetime,
     eaters: List[UUID] = Query(...),
 ):
-    restaurants = restaurant_manager.reservation_search(eaters)
+    restaurants = restaurant_manager.reservation_search(eaters, time)
     return (
         [RestaurantPydantic.from_orm(restaurant) for restaurant in restaurants]
         if restaurants

@@ -13,5 +13,5 @@ class RestaurantManager:
     def create(self, restaurant_create: RestaurantCreate) -> Restaurant:
         return self.dao.create(restaurant_create)
 
-    def reservation_search(self, eaters: List[UUID]) -> Optional[Restaurant]:
-        return self.dao.reservation_search(eaters)
+    def reservation_search(self, eaters: List[UUID], time: datetime) -> Optional[Restaurant]:
+        return self.dao.reservation_search(eaters, time)

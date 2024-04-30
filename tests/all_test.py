@@ -43,7 +43,7 @@ def test_get_table_multiple():
         response = requests.get(eater_url)
         json_response = response.json()
         eater_ids.append(json_response["id"])
-    params = {"eaters": eater_ids}
+    params = {"eaters": eater_ids, "time": datetime.now().isoformat()}
     response = requests.get(url, params=params)
 
     results = response.json()
@@ -61,7 +61,7 @@ def test_get_table():
         response = requests.get(eater_url)
         json_response = response.json()
         eater_ids.append(json_response["id"])
-    params = {"eaters": eater_ids}
+    params = {"eaters": eater_ids, "time": datetime.now().isoformat()}
     response = requests.get(url, params=params)
 
     expected_names = set(["u.to.pi.a", "Panadería Rosetta"])
@@ -73,7 +73,7 @@ def test_get_table():
     assert result_names == expected_names
 
 
-def test_get_table_multiple():
+def test_get_table_multiple_2():
     url = BASE_URL + "/api/v1/search/restaurants"
     eaters = ["Michael", "George Michael"]
     eater_ids = []
@@ -82,7 +82,7 @@ def test_get_table_multiple():
         response = requests.get(eater_url)
         json_response = response.json()
         eater_ids.append(json_response["id"])
-    params = {"eaters": eater_ids}
+    params = {"eaters": eater_ids, "time": datetime.now().isoformat()}
     response = requests.get(url, params=params)
 
     expected_names = set(["Panadería Rosetta"])
@@ -104,7 +104,7 @@ def test_book_reseration():
         response = requests.get(eater_url)
         json_response = response.json()
         eater_ids.append(json_response["id"])
-    params = {"eaters": eater_ids}
+    params = {"eaters": eater_ids, "time": datetime.now().isoformat()}
 
     # Search for available restaurants
     response = requests.get(search_url, params=params)

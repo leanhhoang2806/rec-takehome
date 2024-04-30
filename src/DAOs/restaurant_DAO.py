@@ -3,14 +3,16 @@ from src.models.posgres_model import (
     t_Dietary_Restrictions,
     t_Restaurant_Endorsements,
     Endorsement,
+    RestaurantAvailableTable,
+    Reservation
 )
 from src.models.pydantic_model import RestaurantCreate
 from src.DAOs.database_session import session
 from src.DAOs.base_DAO import BaseDAO
-
+from datetime import datetime, timedelta
 from typing import List, Optional
 from uuid import UUID
-from sqlalchemy import func
+from sqlalchemy import func, and_
 
 
 class RestaurantDAO(BaseDAO):
@@ -28,8 +30,9 @@ class RestaurantDAO(BaseDAO):
         finally:
             session.close()
 
-    def reservation_search(self, eater_ids: List[UUID]) -> Optional[Restaurant]:
-
+    def reservation_search(self, eater_ids: List[UUID], time: datetime) -> Optional[Restaurant]:
+        five_minutes_before = time - timedelta(minutes=5)
+        five_minutes_after = time + timedelta(minutes=5)
         try:
 
             eater_diet_query = (
@@ -75,6 +78,15 @@ class RestaurantDAO(BaseDAO):
             available_tables_query = (
                 session.query(Restaurant)
                 .join(subquery, subquery.c.restaurant_id == Restaurant.id)
+                .join(RestaurantAvailableTable)
+                .outerjoin(
+                    Reservation,
+                    and_(
+                        Reservation.created_at.between(
+                            five_minutes_before, five_minutes_after
+                        )
+                    ),
+                )
                 .filter(subquery.c.count == len(endorsement_ids))
                 .all()
             )
